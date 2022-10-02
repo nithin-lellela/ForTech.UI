@@ -1,0 +1,21 @@
+<h3>Select User</h3>
+<div class="container">
+  <div class="row">
+    <input (keyup)="onKey($event)">
+  </div>
+  <div class="row" style="margin-top: 20px; font-size: large;" *ngFor="let user of users">
+    <div class="col-md-2">
+      <span class="avatar avatar-sm rounded-circle">
+        <img [src]="user.profileImageUrl" width="30" height="35">
+      </span>
+    </div>
+    <div class="col-md-5" style="margin-top: 10px;">
+      @{{user.userName}}
+    </div>
+    <div class="col-md-5" style="margin-top: 10px;">
+      <button mat-raised-button color="primary" (click)="onClick(user.id)" >Refer</button>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,152 @@
+<!--<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Hello {{userName}}</h2>
+    </div>
+    <div class="col-md-8">
+      <img [src]="imagePath" width="250" height="300">
+    </div>
+  </div>
+</div>-->
+<div class="header">
+  <h1>ForTech</h1>
+  <p>A FORUM for TECHNOLOGY.</p>
+</div>
+<div class="container">
+
+  <div class="menu">
+    <div class="course">
+      <div class="side">
+        <ng-container>
+          <h2 class="text-warning ml-3">Top Channels of the Week</h2>
+          <ul class="list-group my-3">
+            <li style="cursor: pointer; font-size: medium;" class="list-group-item" *ngFor="let category of topChannels" [value]="category.id" [routerLink]="['/discussion', category.id]">
+               {{category.channelName}}
+            </li>
+          </ul>
+        </ng-container>
+        <ng-container>
+          <h2 class="text-warning ml-3">Top Users of the Week</h2>
+          <ul class="list-group my-3">
+            <li style="cursor: pointer; font-size: medium;" class="list-group-item" *ngFor="let user of topUsers" [value]="user.id" [routerLink]="['/profile', user.id]">
+              {{user.name}}
+            </li>
+          </ul>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="navigationBar" id="myHeader">
+          <div style=" padding: 10px; margin-top: 5px;">
+            <div class="card gedf-card">
+              <div class="card">
+                <div class="d-flex justify-content-between p-2 px-3">
+                  <div class="d-flex flex-row align-items-center"> <img [src]="imagePath" width="50" height="50"
+                      class="rounded-circle">
+                    <div class="d-flex flex-column ml-2" style="margin-left: 10px; font-size:medium"> <span
+                        class="font-weight-bold">{{this.userInfo.userName}}</span></div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                      <div class="form-group">
+                        <label class="sr-only" for="message"></label>
+                        <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"
+                          (change)="onPostChange($event)"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="select">
+              <div class="row">
+                <form>
+                  <mat-form-field style="margin-left: -15px;">
+                    <mat-label>Select Channel</mat-label>
+                    <mat-select [(ngModel)]="selectedValue" name="food">
+                      <mat-option *ngFor="let channel of allChannels" [value]="channel.id">
+                        {{channel.channelName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </form>
+                <div class="btn-toolbar justify-content-flex-start">
+                  <div class="btn-group">
+                    <button type="submit" mat-raised-button color="primary" (click)="onPost()">share</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="discussion" *ngFor="let forum of AllDiscussionForums">
+            <div class="social-feed-box container-fluid">
+              <div class="social-avatar row" style="text-decoration: none; margin-left: -20px; margin-top: -20px;">
+                <a href="" class="pull-left col-md-1" [routerLink]="['/profile', forum.userId]">
+                  <img alt="image" [src]="forum.profileImagePath" style="border-radius: 50%">
+                </a>
+                <div class="media-body col-md-10" style="margin-left: -30px">
+                  <a href="#" style="text-decoration: none;">
+                    {{forum.userName}} <span *ngIf="forum.isLoggedInUserPost"
+                      style="color: #ccc; font-size: 15px;">You</span>
+                  </a>
+                  <small class="text-muted">{{forum.dateCreated}}</small>
+                </div>
+                <div class="col-md-1" style="margin-left: 30px" *ngIf="forum.isLoggedInUserPost">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                      <mat-icon>edit</mat-icon>
+                      <span>Edit</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>delete</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+              <div class="social-body">
+                <p style="font-size:large">
+                  {{forum.description}}
+                </p>
+                <div class="btn-group" style="margin-left: -20px">
+                  <button class="btn btn-white btn-xs" [ngClass]="{'liked': forum.isLiked, 'unliked': !forum.isLiked}"
+                    style="text-decoration: none; cursor: pointer;" >
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;">thumb_up</mat-icon> {{forum.forumUpvotes}}
+                  </button>
+                  <button class="btn btn-white btn-xs" (click)="showComments(forum.id)">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;"> forum </mat-icon>{{forum.forumReplies}}
+                  </button>
+                  
+                </div>
+              </div>
+
+              <div class="social-footer container-fluid" [ngStyle]="{'display': forum.hideComment ? 'none' : 'block'}">
+                <div class="social-comment">
+
+                  <div class="media-body" style="margin-top: 10px">
+                    <textarea class="form-control" placeholder="Write comment..."
+                      (change)="onTextChange($event)"></textarea>
+                  </div>
+                  <button mat-raised-button color="primary" type="submit"
+                    style="margin-top: 5px; margin-bottom: 5px; font-size: 10px;" >
+                    <mat-icon>send</mat-icon>
+                  </button>
+                </div>
+
+                <app-reply [forumId]="forum.id" [newComment]="this.newComment"
+                  [isLoggedInUserPost]="forum.isLoggedInUserPost"></app-reply>
+              </div>
+            </div>
+          </div>
+
+    </div>
+  </div>
+</div>
+

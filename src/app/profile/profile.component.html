@@ -1,0 +1,148 @@
+<nav>
+<div class="main-content">
+  <ul class="navbar-nav align-items-center d-none d-md-flex">
+    <li class="nav-item dropdown">
+      <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- <div class="media align-items-center"> -->
+          <!-- <span class="avatar avatar-sm rounded-circle">
+            <img alt="Image placeholder"
+              src="https://media-exp1.licdn.com/dms/image/D5603AQH8z9E-TIBKIQ/profile-displayphoto-shrink_400_400/0/1662277799959?e=1669852800&v=beta&t=1dFrME-BWv6GYiEyYqfEhrLQ19-8UFpU8qYypn3-OF0">
+          </span> -->
+          <!-- <div class="media-body ml-2 d-none d-lg-block">
+            <span class="mb-0 text-sm  font-weight-bold">{{userProfileDetails.userName}}</span>
+          </div> -->
+        <!-- </div> -->
+      </a>
+    </li>
+  </ul>
+</div>
+</nav>
+<!-- Header -->
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+  style="min-height: 600px; background-image: url(https://raw.githubusercontent.com/creativetimofficial/argon-dashboard/gh-pages/assets-old/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <div class="row">
+      <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+        <div class="card card-profile shadow">
+          <div class="row justify-content-center">
+            <div class="col-lg-3 order-lg-2">
+              <div class="card-profile-image">
+                <a href="#">
+                  <img
+                    [src]="imagePath" width="185" height="170"
+                    class="rounded-circle">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0 pt-md-4">
+            <div class="row">
+              <div class="col">
+                <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                  <div>
+                    <span class="heading">{{userProfileDetails.score}}</span>
+                    <span class="description">Score</span>
+                  </div>
+                  <div>
+                    <span class="heading">{{userProfileDetails.experience}}</span>
+                    <span class="description">Experience</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <h3>
+                {{userProfileDetails.userName}}
+              </h3>
+              <div class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i>{{userProfileDetails.city}}
+              </div>
+              <div class="h5 mt-4">
+                <i class="ni business_briefcase-24 mr-2"></i>{{userProfileDetails.role}} at ADP
+              </div>
+              <hr class="h5 mt-4">
+              <p><b>Skills:</b></p>
+              <p>{{userProfileDetails.skills}}</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8 order-xl-1">
+        <div class="card bg-secondary shadow">
+          <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+              <div class="col-8" *ngIf="this.myProfile">
+                <h3 class="mb-0">My account</h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form>
+              <h6 class="heading-small text-muted mb-4">User information</h6>
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group focused">
+                      <label class="form-control-label" for="input-username">Username</label>
+                      <input type="text" disabled="true" id="input-username" class="form-control form-control-alternative"
+                        placeholder="Username" value="{{userProfileDetails.userName}}">
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="input-email">Email address</label>
+                      <input type="email" disabled="true" id="input-email" class="form-control form-control-alternative"
+                        placeholder="{{userProfileDetails.email}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group focused">
+                      <label class="form-control-label" for="input-first-name">First name</label>
+                      <input type="text" disabled="true" id="input-first-name" class="form-control form-control-alternative"
+                        placeholder="{{this.firstName}}" value="{{this.firstName}}">
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group focused">
+                      <label class="form-control-label" for="input-last-name">Last name</label>
+                      <input type="text" disabled="true" id="input-last-name" class="form-control form-control-alternative"
+                        placeholder="{{this.lastName}}" value="{{this.lastName}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
+              <!-- Address -->
+              <h6 class="heading-small text-muted mb-4">Contact information</h6>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group focused">
+                    <label class="form-control-label" for="input-city">Phone No</label>
+                    <input type="text" disabled="true" id="input-city" class="form-control form-control-alternative" placeholder="{{userProfileDetails.phoneNumber}}"
+                      value="{{userProfileDetails.phoneNumber}}">
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
+              <!-- Description -->
+              <h6 class="heading-small text-muted mb-4">Skills</h6>
+              <div class="pl-lg-4">
+                <div class="form-group focused">
+                  <textarea rows="4" disabled="true" class="form-control form-control-alternative"
+                    placeholder="Skills">{{userProfileDetails.skills}}</textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

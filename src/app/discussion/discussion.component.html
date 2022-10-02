@@ -1,0 +1,282 @@
+<div class="container">
+  <div class="menu">
+    <div class="course">
+      <h1 style="font-size:xx-large; font-weight:500; margin-bottom: 40px; margin-top: 10px;">{{channelInfo.channelName}}</h1>
+      <div class="side">
+        <ng-container>
+          <h2 class="text-warning ml-3">Top Topics :</h2>
+          <ul class="list-group my-3">
+            <li style="cursor: pointer; font-size: medium;" class="list-group-item" *ngFor="let topic of topTopics"
+              [value]="topic">
+              {{topic}}
+            </li>
+          </ul>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="navigationBar" id="myHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <button mat-raised-button color="primary" (click)="createForumDialog()"><mat-icon>add_box</mat-icon>
+            New Post</button>
+          </div>
+          <div class="col-md-9">
+            <input type="text" class="sbar" placeholder="Search.." name="search" [(ngModel)]="enteredSearch"
+              style="margin-left:250px;margin-top: 0px;width:40%;padding:5px" (change)="onSearchInput($event)" >
+            <button mat-stroked-button style="margin-left:10px;padding:-1px" (click)="onSearch()">Search</button>
+            <button mat-stroked-button style="margin-left:10px;padding:-1px" (click)="onClear()">Clear</button>
+          </div>
+        </div>
+      </div>
+      <mat-tab-group mat-align-tabs="start" style="margin-top: 15px">
+        <mat-tab label="All Posts">
+
+          <div class="discussion" *ngFor="let forum of AllDiscussionForums">
+            <div class="social-feed-box container-fluid" >
+              <div class="social-avatar row" style="text-decoration: none; margin-left: -20px; margin-top: -20px;" >
+                <a href="" class="pull-left col-md-1" [routerLink]="['/profile', forum.userId]">
+                  <img alt="image" [src]="forum.profileImagePath" style="border-radius: 50%">
+                </a>
+                <div class="media-body col-md-10" style="margin-left: -30px">
+                  <a href="#" style="text-decoration: none;">
+                    {{forum.userName}} <span *ngIf="forum.isLoggedInUserPost" style="color: #ccc; font-size: 15px;">You</span>
+                  </a>
+                  <small class="text-muted">{{forum.dateCreated}}</small>
+                </div>
+                <div class="col-md-1" style="margin-left: 30px" *ngIf="forum.isLoggedInUserPost">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="EditForum(forum.id, forum.description)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="DeleteForum(forum.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+              <div class="social-body">
+                <p style="font-size:large">
+                  {{forum.description}}
+                </p>
+                <div class="btn-group" style="margin-left: -20px">
+                  <button class="btn btn-white btn-xs" [ngClass]="{'liked': forum.isLiked, 'unliked': !forum.isLiked}" style="text-decoration: none; cursor: pointer;" (click)="updateForumLikes(forum.id, forum.isLiked)"><mat-icon style="margin-bottom: -5px; margin-left: 10px;">thumb_up</mat-icon> {{forum.forumUpvotes}} </button>
+                  <button class="btn btn-white btn-xs"><mat-icon style="margin-bottom: -5px; margin-left: 10px;" (click)="showComments(forum.id, 'All')"> forum </mat-icon>{{forum.forumReplies}} </button>
+                  <button class="btn btn-white btn-xs" mat-button (click)="openDialog(forum.id, forum.userName, forum.userId)"> Refer</button>
+                </div>
+              </div>
+
+              <div class="social-footer container-fluid" [ngStyle]="{'display': forum.hideComment ? 'none' : 'block'}">
+                <div class="social-comment">
+
+                  <div class="media-body" style="margin-top: 10px">
+                    <textarea class="form-control" placeholder="Write comment..." (change)="onTextChange($event)"></textarea>
+                  </div>
+                  <button mat-raised-button color="primary" type="submit" style="margin-top: 5px; margin-bottom: 5px; font-size: 10px;" (click)="onReply(forum.id)"><mat-icon>send</mat-icon></button>
+                </div>
+
+                <app-reply [forumId]="forum.id" [newComment]="this.newComment" [isLoggedInUserPost]="forum.isLoggedInUserPost"></app-reply>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Top Posts" (click)="fetchTop()">
+
+          <div class="discussion" *ngFor="let forum of TopDiscussionForums" >
+            <div class="social-feed-box container-fluid">
+              <div class="social-avatar row" style="text-decoration: none; margin-left: -20px; margin-top: -20px;">
+                <a href="" class="pull-left col-md-1" [routerLink]="['/profile', forum.userId]">
+                  <img alt="image" [src]="forum.profileImagePath" style="border-radius: 50%">
+                </a>
+                <div class="media-body col-md-10" style="margin-left: -30px">
+                  <a href="#" style="text-decoration: none;">
+                    {{forum.userName}} <span *ngIf="forum.isLoggedInUserPost" style="color: #ccc; font-size: 15px;">You</span>
+                  </a>
+                  <small class="text-muted">{{forum.dateCreated}}</small>
+                </div>
+                <div class="col-md-1" style="margin-left: 30px" *ngIf="forum.isLoggedInUserPost">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="EditForum(forum.id, forum.description)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="DeleteForum(forum.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+              <div class="social-body">
+                <p style="font-size:large">
+                  {{forum.description}}
+                </p>
+                <div class="btn-group" style="margin-left: -20px">
+                  <button class="btn btn-white btn-xs" [ngClass]="{'liked': forum.isLiked, 'unliked': !forum.isLiked}"
+                    style="text-decoration: none; cursor: pointer;" (click)="updateForumLikes(forum.id, forum.isLiked)">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;">thumb_up</mat-icon> {{forum.forumUpvotes}}
+                  </button>
+                  <button class="btn btn-white btn-xs" (click)="showComments(forum.id, 'Top')">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;"> forum </mat-icon>{{forum.forumReplies}}
+                  </button>
+                  <button class="btn btn-white btn-xs" mat-button (click)="openDialog(forum.id, forum.userName, forum.userId)"> Refer</button>
+                </div>
+              </div>
+
+              <div class="social-footer container-fluid" [ngStyle]="{'display': forum.hideComment ? 'none' : 'block'}">
+                <div class="social-comment">
+
+                  <div class="media-body" style="margin-top: 10px">
+                    <textarea class="form-control" placeholder="Write comment..." (change)="onTextChange($event)"></textarea>
+                  </div>
+                  <button mat-raised-button color="primary" type="submit"
+                    style="margin-top: 5px; margin-bottom: 5px; font-size: 10px;" (click)="onReply(forum.id)">
+                    <mat-icon>send</mat-icon>
+                  </button>
+                </div>
+
+                <app-reply [forumId]="forum.id" [newComment]="this.newComment" [isLoggedInUserPost]="forum.isLoggedInUserPost">
+                </app-reply>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Most Recent Posts" (click)="fetchMostRecent()">
+          <div class="discussion" *ngFor="let forum of MostDiscussionForums" >
+            <div class="social-feed-box container-fluid">
+              <div class="social-avatar row" style="text-decoration: none; margin-left: -20px; margin-top: -20px;">
+                <a href="" class="pull-left col-md-1" [routerLink]="['/profile', forum.userId]">
+                  <img alt="image" [src]="forum.profileImagePath" style="border-radius: 50%">
+                </a>
+                <div class="media-body col-md-10" style="margin-left: -30px">
+                  <a href="#" style="text-decoration: none;">
+                    {{forum.userName}} <span *ngIf="forum.isLoggedInUserPost" style="color: #ccc; font-size: 15px;">You</span>
+                  </a>
+                  <small class="text-muted">{{forum.dateCreated}}</small>
+                </div>
+                <div class="col-md-1" style="margin-left: 30px" *ngIf="forum.isLoggedInUserPost">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="EditForum(forum.id, forum.description)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="DeleteForum(forum.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+              <div class="social-body">
+                <p style="font-size:large">
+                  {{forum.description}}
+                </p>
+                <div class="btn-group" style="margin-left: -20px">
+                  <button class="btn btn-white btn-xs" [ngClass]="{'liked': forum.isLiked, 'unliked': !forum.isLiked}"
+                    style="text-decoration: none; cursor: pointer;" (click)="updateForumLikes(forum.id, forum.isLiked)">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;">thumb_up</mat-icon> {{forum.forumUpvotes}}
+                  </button>
+                  <button class="btn btn-white btn-xs" (click)="showComments(forum.id, 'Recent')">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;"> forum </mat-icon>{{forum.forumReplies}}
+                  </button>
+                  <button class="btn btn-white btn-xs" mat-button (click)="openDialog(forum.id, forum.userName, forum.userId)"> Refer</button>
+                </div>
+              </div>
+
+              <div class="social-footer container-fluid" [ngStyle]="{'display': forum.hideComment ? 'none' : 'block'}">
+                <div class="social-comment">
+
+                  <div class="media-body" style="margin-top: 10px">
+                    <textarea class="form-control" placeholder="Write comment..." (change)="onTextChange($event)"></textarea>
+                  </div>
+                  <button mat-raised-button color="primary" type="submit"
+                    style="margin-top: 5px; margin-bottom: 5px; font-size: 10px;" (click)="onReply(forum.id)">
+                    <mat-icon>send</mat-icon>
+                  </button>
+                </div>
+
+                <app-reply [forumId]="forum.id" [newComment]="this.newComment" [isLoggedInUserPost]="forum.isLoggedInUserPost">
+                </app-reply>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Unanswered Posts" (click)="fetchUnanswered()">
+          <div class="discussion" *ngFor="let forum of UnansweredDiscussionForums">
+            <div class="social-feed-box container-fluid">
+              <div class="social-avatar row" style="text-decoration: none; margin-left: -20px; margin-top: -20px;">
+                <a href="" class="pull-left col-md-1" [routerLink]="['/profile', forum.userId]">
+                  <img alt="image" [src]="forum.profileImagePath" style="border-radius: 50%">
+                </a>
+                <div class="media-body col-md-10" style="margin-left: -30px">
+                  <a href="#" style="text-decoration: none;">
+                    {{forum.userName}} <span *ngIf="forum.isLoggedInUserPost" style="color: #ccc; font-size: 15px;">You</span>
+                  </a>
+                  <small class="text-muted">{{forum.dateCreated}}</small>
+                </div>
+                <div class="col-md-1" style="margin-left: 30px" *ngIf="forum.isLoggedInUserPost">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="EditForum(forum.id, forum.description)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="DeleteForum(forum.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+              <div class="social-body">
+                <p style="font-size:large">
+                  {{forum.description}}
+                </p>
+                <div class="btn-group" style="margin-left: -20px">
+                  <button class="btn btn-white btn-xs" [ngClass]="{'liked': forum.isLiked, 'unliked': !forum.isLiked}"
+                    style="text-decoration: none; cursor: pointer;" (click)="updateForumLikes(forum.id, forum.isLiked)">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;">thumb_up</mat-icon> {{forum.forumUpvotes}}
+                  </button>
+                  <button class="btn btn-white btn-xs" (click)="showComments(forum.id, 'Unanswered')">
+                    <mat-icon style="margin-bottom: -5px; margin-left: 10px;"> forum </mat-icon>{{forum.forumReplies}}
+                  </button>
+                  <button class="btn btn-white btn-xs" mat-button (click)="openDialog(forum.id, forum.userName, forum.userId)"> Refer</button>
+                </div>
+              </div>
+
+              <div class="social-footer container-fluid" [ngStyle]="{'display': forum.hideComment ? 'none' : 'block'}">
+                <div class="social-comment">
+
+                  <div class="media-body" style="margin-top: 10px">
+                    <textarea class="form-control" placeholder="Write comment..." (change)="onTextChange($event)"></textarea>
+                  </div>
+                  <button mat-raised-button color="primary" type="submit"
+                    style="margin-top: 5px; margin-bottom: 5px; font-size: 10px;" (click)="onReply(forum.id)">
+                    <mat-icon>send</mat-icon>
+                  </button>
+                </div>
+
+                <app-reply [forumId]="forum.id" [newComment]="this.newComment" [isLoggedInUserPost]="forum.isLoggedInUserPost">
+                </app-reply>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

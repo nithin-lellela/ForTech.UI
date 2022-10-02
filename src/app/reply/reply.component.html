@@ -1,0 +1,31 @@
+<div *ngFor="let reply of AllRepliesForum" style="margin-top: 15px;">
+  <div class="social-comment row" >
+    <a href="" class="pull-left col-md-1" [routerLink]="['/profile', reply.userId]">
+      <img alt="image" [src]="reply.profileImageUrl" style="border-radius: 50%" width="30" height="30">
+    </a>
+    <div class="media-body col-md-11" style="margin-left: -30px">
+      <a href="#" style="text-decoration: none" *ngIf="!reply.isLoggedInUserReply">
+        {{reply.userName}}
+      </a>
+      <a href="#" style="text-decoration: none" *ngIf="reply.isLoggedInUserReply">
+        You
+      </a>
+      <br>
+      <small class="text-muted">{{reply.dateCreated}}</small>
+    </div>
+  </div>
+  <div class="social-comment" >
+    <p style="font-size: large;">{{reply.description}}</p>
+  </div>
+  <ul class="list-inline d-sm-flex my-0">
+    <li class="list-inline-item mr-auto" style="margin-right: auto; cursor: pointer; font-size: medium;">
+      <button class="btn btn-white btn-xs" style="text-decoration: none; cursor: pointer;" (click)="updateUpvotes(reply.id, reply.isLiked)">
+        <mat-icon style="margin-bottom: -5px; margin-left: -10px;">navigation</mat-icon> {{reply.forumReplyUpvotes}}
+      </button>
+    </li>
+    <li class="list-inline-item ml-auto" style="margin-left: auto; cursor: pointer;" *ngIf="isLoggedInUserPost" (click)="deleteReply(reply.id)">
+      <mat-icon>delete</mat-icon>
+    </li>
+  </ul>
+</div>
+

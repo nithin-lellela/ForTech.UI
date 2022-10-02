@@ -1,0 +1,89 @@
+<div class="form-container mat-elevation-z5" style="margin-top: 25px">
+  <h1>Registration</h1>
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Fill your details</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" placeholder="Enter your first name" required type="text">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" placeholder="Enter your last name" required type="text">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Enter official EmailID" required type="email">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" placeholder="Enter your password" required type="password">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput formControlName="confirmPassword" placeholder="Enter confirm password" required
+            type="password">
+        </mat-form-field>
+        <div>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>professional details</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>Role</mat-label>
+          <input matInput formControlName="role" placeholder="Enter your current role" required type="text">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Experience</mat-label>
+          <input matInput formControlName="experience" placeholder="Enter years of experience" required type="number">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city" placeholder="Enter your city" required type="text">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Skills</mat-label>
+          <textarea matInput formControlName="skills" placeholder="Enter skills (Optional)"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" placeholder="Enter work mobile number (Optional)" type="text">
+        </mat-form-field>
+
+        <div>
+          <button mat-raised-button matStepperPrevious color="primary">Back</button>
+          <button mat-raised-button matStepperNext color="primary" style="margin-left: 10px">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <input type="file" (change)="onChange($event)">
+      <div>
+        <button mat-raised-button matStepperPrevious color="primary">Back</button>
+        <button mat-raised-button (click)="onRegister()" color="primary" style="margin-left: 10px">Sign up</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>
+<div>
+  <span class="center margin-top" style="font-size: 20px;" (click)="onChangeRoute('login')">Already a User? <a
+      class="sign-up-link" routerLink="/login">Login</a></span>
+</div>
+<div class="container" style="margin-top: 3%;">
+  <div class="row">
+    <div class="col-md-2">
+
+    </div>
+
+    <div class="col-md-2">
+
+    </div>
+  </div>
+</div>
+

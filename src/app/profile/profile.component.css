@@ -1,13 +1,3 @@
-mat-toolbar {
-  justify-content: space-between;
-}
-
-.content {
-  padding: 32px;
-}
-
-
-
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;
@@ -1127,6 +1117,9 @@ button.bg-white:focus {
 
 .rounded-circle {
   border-radius: 50% !important;
+  height:165px;
+  width:165px;
+  margin-top:20px
 }
 
 .d-none {
@@ -1141,6 +1134,7 @@ button.bg-white:focus {
 
   .d-md-flex {
     display: flex !important;
+    background-color:#0a144bc2;
   }
 }
 
@@ -2040,5 +2034,3 @@ p {
 #navbar .navbar {
   margin-bottom: 20px;
 }
-
-

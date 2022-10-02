@@ -1,0 +1,45 @@
+<div class="form-container mat-elevation-z5" style="margin-top: 25px; display: block; max-width: 500px;
+    background: #eceff1;
+    padding: 48px;
+    border-radius: 16px;">
+  <h1>Login</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Email Address" formControlName="email" type="email" />
+      <mat-error *ngIf="email?.errors?.['required']">
+        Email is required !
+      </mat-error>
+      <mat-error *ngIf="email?.errors?.['email']">
+        Please enter a correct email format !
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" formControlName="password" type="password" />
+      <mat-error *ngIf="password?.errors?.['required']">
+        Password is required !
+      </mat-error>
+      <mat-error *ngIf="password?.errors?.['minlength']">
+        Password must be atleast 8 charecters
+      </mat-error>
+    </mat-form-field>
+    <div class="center margin-top" style="justify-content: space-between;">
+      <a class="forgot-password" routerLink="/resetpassword">Forgot Password ?</a>
+      <button mat-raised-button color="primary" type="submit" class="mat-elevation-z5">
+        Login
+      </button>
+    </div>
+    <span class="center margin-top" (click)="onChangeRoute('login')">New to our platform? <a class="sign-up-link"
+        routerLink="/register">Register</a></span>
+  </form>
+</div>
+<div class="container" style="margin-top: 10%">
+  <div class="row">
+    <div class="col-md-6">
+
+    </div>
+    <div class="col-md-6">
+
+
+    </div>
+  </div>
+</div>
